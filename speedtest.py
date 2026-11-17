@@ -12,8 +12,10 @@ def fetch(url, timeout=60):
     """Download url fully; return (seconds, bytes)."""
     req = urllib.request.Request(url, headers={"Cache-Control": "no-cache", "User-Agent": "speedtest-cli"})
     start = time.perf_counter()
+    size = 0
     with urllib.request.urlopen(req, timeout=timeout) as resp:
-        size = len(resp.read())
+        while chunk := resp.read(1 << 16):  # read in chunks so big files don't fill RAM
+            size += len(chunk)
     return time.perf_counter() - start, size
 
 
