@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Measure download speed by fetching a URL several times in a row."""
 import argparse
+import http.client
 import sys
 import time
 import urllib.error
@@ -44,7 +45,7 @@ def main():
     print(f"Downloading {args.url} {args.n} times...")
     try:
         times, total = measure(args.url, args.n)
-    except (urllib.error.URLError, OSError) as e:
+    except (urllib.error.URLError, OSError, http.client.HTTPException) as e:  # HTTPException: bad URL (space), truncated body
         sys.exit(f"Error: {e}")
 
     elapsed = sum(times)
