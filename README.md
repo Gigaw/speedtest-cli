@@ -40,11 +40,11 @@ python3 speedtest.py <URL> -n 5
 
 ### Версия на Node.js
 
-Тот же функционал и тот же формат вывода есть в `speedtest.js`. Нужен Node.js 18.13+ (встроенный `fetch`; проверено на Node 22), без зависимостей и без `npm install`:
+Тот же функционал и тот же формат вывода есть в `speedtest.mjs`. Нужен Node.js 18.13+ (встроенный `fetch`; проверено на Node 22), без зависимостей и без `npm install`:
 
 ```bash
-node speedtest.js <URL>
-node speedtest.js <URL> -n 5
+node speedtest.mjs <URL>
+node speedtest.mjs <URL> -n 5
 ```
 
 ## Единицы

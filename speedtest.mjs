@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Measure download speed by fetching a URL several times in a row.
-const { parseArgs } = require("node:util");
+import { pathToFileURL } from "node:url";
+import { parseArgs } from "node:util";
 
 // Download url fully; return { seconds, bytes }.
 async function fetchOnce(url) {
@@ -16,7 +17,7 @@ async function fetchOnce(url) {
 }
 
 // Run n sequential requests; return { times, total }.
-async function measure(url, n) {
+export async function measure(url, n) {
   const times = [];
   let total = 0;
   for (let i = 1; i <= n; i++) {
@@ -29,7 +30,7 @@ async function measure(url, n) {
 }
 
 function usageError(msg) {
-  console.error(`usage: speedtest.js [-h] [-n N] url\nspeedtest.js: error: ${msg}`);
+  console.error(`usage: speedtest.mjs [-h] [-n N] url\nspeedtest.mjs: error: ${msg}`);
   process.exit(2);
 }
 
@@ -41,7 +42,7 @@ async function main() {
     usageError(e.message);
   }
   if (args.values.help) {
-    console.log("usage: speedtest.js [-h] [-n N] url\n\n  url   http(s) URL to download, e.g. a large image\n  -n N  number of requests (default: 10)");
+    console.log("usage: speedtest.mjs [-h] [-n N] url\n\n  url   http(s) URL to download, e.g. a large image\n  -n N  number of requests (default: 10)");
     return;
   }
   if (args.positionals.length !== 1) usageError("exactly one URL is required");
@@ -73,6 +74,5 @@ async function main() {
   console.log(`Download speed:       ${((total * 8) / elapsed / 1e6).toFixed(2)} Mbit/s (${(total / elapsed / 1e6).toFixed(2)} MB/s)`);
 }
 
-if (require.main === module) main();
-
-module.exports = { measure };
+// Run only when executed directly, not when imported by the test.
+if (import.meta.url === pathToFileURL(process.argv[1]).href) main();

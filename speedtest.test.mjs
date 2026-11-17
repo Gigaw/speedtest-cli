@@ -1,7 +1,7 @@
-const test = require("node:test");
-const assert = require("node:assert");
-const http = require("node:http");
-const { measure } = require("./speedtest.js");
+import assert from "node:assert";
+import http from "node:http";
+import test from "node:test";
+import { measure } from "./speedtest.mjs";
 
 test("counts all bytes of all requests", async (t) => {
   const body = Buffer.alloc(100_000, "x");
